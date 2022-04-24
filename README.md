@@ -5,7 +5,7 @@
 
 --------------------------------
 
-The game currently features an AI opponent which will make moves randomly. I plan to change that in the future, but for now it is like this. Also another thing to note is that you as the player will always be playing first and as the X's, another thing which will be adressed later one. When the game comes to either a win, lose or a draw, you will need to press the mouse on the window so that it can restart the game for you.
+The game currently features an AI opponent which will make moves randomly. I plan to change that in the future, but for now it is like this. Also another thing to note is that you as the player will always be playing first and as the X's, another thing which will be addressed later one. When the game comes to either a win, lose or a draw, you will need to press the mouse on the window so that it can restart the game for you.
 
 --------------------------------
  The settings/workspace I used for compiling:
@@ -13,3 +13,11 @@ The game currently features an AI opponent which will make moves randomly. I pla
     Compiler     ---> GCC 7.3.0
     C++ Standard ---> C++11
     IDE          ---> Visual Studio Code
+    
+--------------------------------
+You will need this exact version of GCC to compile the code if you are using VS Code like I am. For Visual Studio, you will need to download the SFML library and connect it to the project settings in the IDE. As for GCC, you will need to set it up as your compiler if you do not have it already. Note that you do not need to download SFML if you will be using this in VS Code, everything is set up in the project files already.
+
+Links to download required files:
+
+    GCC  ---> https://gcc.gnu.org/install/download.html
+    SFML ---> https://www.sfml-dev.org/download.php
