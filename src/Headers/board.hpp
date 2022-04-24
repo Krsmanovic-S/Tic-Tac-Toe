@@ -5,7 +5,9 @@
 
 class Board
 {
+    typedef std::vector<std::vector<int>> matrix;
 private:
+    // Variables
     bool is_player_turn;
     bool game_over;
 
@@ -16,27 +18,29 @@ private:
     sf::Texture texture_o;
     sf::Sprite occupied_cell;
 
-    std::vector<std::vector<int>> field = {
-        {0, 0, 0},
-        {0, 0, 0},
-        {0, 0, 0}
-    };
+    matrix field;
+
+    // Initializers
+    void initField();
+    void initPlayer();
+    void initGameState();
+    void initText();
 public:
+    // Constructor
     Board();
 
-    void drawBoard(sf::RenderWindow& window);
-
-    std::vector<std::vector<int>> get_field();
-
+    // Getters 
+    matrix get_field();
     bool get_game_over();
     bool get_player_turn();
 
+    // Setters
     void set_player_turn();
     void set_field(int i, int j);
 
+    // Functions
+    void drawBoard(sf::RenderWindow& window);
     void changeMatrix(sf::Vector2i mousePos);
-
     void checkWinner();
-
     void reset();
 };

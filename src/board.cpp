@@ -1,45 +1,69 @@
-#include "board.h"
+#include "board.hpp"
 
-// Default Constructor
-Board::Board()
-{
+// Initializers
+void Board::initField() {
+    this->field = {
+        {0, 0, 0},
+        {0, 0, 0},
+        {0, 0, 0}
+    };
+}
+
+void Board::initPlayer() {
+    this->is_player_turn = true;
+}
+
+void Board::initGameState() {
+    this->game_over = false;
+}
+
+void Board::initText() {
     // Textures for the X's and O's.
-    texture_x.loadFromFile("Resources/x.png");
-    texture_o.loadFromFile("Resources/o.png");
-    occupied_cell.setScale(sf::Vector2f(1.3,1.3));
+    this->texture_x.loadFromFile("Resources/x.png");
+    this->texture_o.loadFromFile("Resources/o.png");
+    this->occupied_cell.setScale(sf::Vector2f(1.3,1.3));
 
     // Setting up the font/text for winning/drawing/losing.
-    text_font.loadFromFile("Resources/LEMONMILK-Regular.otf");
+    this->text_font.loadFromFile("Resources/LEMONMILK-Regular.otf");
 
-    winning_text.setFont(text_font);
-    winning_text.setFillColor(sf::Color::Red);
-    winning_text.setPosition(sf::Vector2f(320, 390));
-    winning_text.setCharacterSize(50);
+    this->winning_text.setFont(text_font);
+    this->winning_text.setFillColor(sf::Color::Red);
+    this->winning_text.setPosition(sf::Vector2f(320, 390));
+    this->winning_text.setCharacterSize(50);
+}
 
-    game_over = false;
-    is_player_turn = true;
+// Constructor
+Board::Board()
+{
+    initField();
+    initPlayer();
+    initGameState();
+    initText();
 };
 
-// Setters & Getters
+// Setters 
 std::vector<std::vector<int>> Board::get_field() {
     return this->field;
 }
+
 bool Board::get_game_over() {
     return this->game_over;
 }
+
 bool Board::get_player_turn() {
     return this->is_player_turn;
 }
 
+// Setters
 void Board::set_player_turn() {
     this->is_player_turn = true;
 }
+
 void Board::set_field(int i, int j) {
     this->field[i][j] = 2;
 }
 
-// Main drawing function, will draw everything
-// like the grid, X and O sprites, and text.
+// Functions
 void Board::drawBoard(sf::RenderWindow& window) {
     for(int i = 0; i < 3; i++)
     {
