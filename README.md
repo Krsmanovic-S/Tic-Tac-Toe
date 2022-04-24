@@ -1,7 +1,7 @@
 # Tic-Tac-Toe
  A simple game of Tic-Tac-Toe created with C++ and the SFML Library.
 
-![screen_shot_1](https://user-images.githubusercontent.com/103185975/164334493-92aa35ce-9953-4dfa-a3cb-8814b0f3c7aa.PNG)  ![screen_shot_2](https://user-images.githubusercontent.com/103185975/164335188-2321dcb5-9a53-4e89-bd59-28d73c7f59b7.PNG)  ![screen_shot_3](https://user-images.githubusercontent.com/103185975/164335193-a5b96a35-cb51-4f54-bc69-1eabd4d5ce16.PNG)
+![screen_shot_1](https://user-images.githubusercontent.com/103185975/164334493-92aa35ce-9953-4dfa-a3cb-8814b0f3c7aa.PNG)  ![screen_shot_2](https://user-images.githubusercontent.com/103185975/164335188-2321dcb5-9a53-4e89-bd59-28d73c7f59b7.PNG)  ![screen_shot_3](https://user-images.githubusercontent.com/103185975/164335193-a5b96a35-cb51-4f54-bc69-1eabd4d5ce16.PNG) ![screenshot_4](https://user-images.githubusercontent.com/103185975/164999803-a3fbc67e-aab8-4ff7-9110-4fc2ffe38d3d.PNG)
 
 --------------------------------
 
