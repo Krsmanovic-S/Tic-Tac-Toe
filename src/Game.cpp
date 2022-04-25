@@ -2,7 +2,7 @@
 
 // Initializers
 void Game::initWindow() {
-    this->window = new sf::RenderWindow(sf::VideoMode(900, 900), "Tic-Tac-Toe");
+    this->window = new sf::RenderWindow(sf::VideoMode(750, 850), "Tic-Tac-Toe");
 }
 
 void Game::initBoard() {
@@ -13,17 +13,28 @@ void Game::initAI() {
     this->computer = new AI();
 }
 
+void Game::initButton() {
+    this->swap_sides = new Button(sf::Vector2f(15, 20), sf::Vector2f(40, 40), "CHANGE SIDES");
+    this->reset = new Button(sf::Vector2f(265, 20), sf::Vector2f(340, 40), "RESET");
+    this->player_vs_player = new Button(sf::Vector2f(515, 20), sf::Vector2f(565, 40), "VS PLAYER");
+}
+
 // Constructor and Destructor
 Game::Game() {
     initWindow();
     initBoard();
     initAI();
+    initButton();
 }
 
 Game::~Game() {
     delete this->window;
     delete this->field;
     delete this->computer;
+
+    delete this->swap_sides;
+    delete this->reset;
+    delete this->player_vs_player;
 }
 
 // Functions
@@ -37,10 +48,16 @@ void Game::updateSFMLEvents() {
         {
             if(this->sfmlEvent.key.code == sf::Mouse::Left)
             {
-                if(this->field->get_game_over())
+                if(this->reset->isMouseOver(sf::Vector2f(mousePos)))
+                    this->field->reset(); 
+
+                if(this->swap_sides->isMouseOver(sf::Vector2f(mousePos)))
+                {
+                    this->field->set_player_x();
                     this->field->reset();
-                    
-                else if(this->field->get_player_turn())
+                }
+
+                if(!this->field->get_game_over() && this->field->get_player_turn())
                     this->field->changeMatrix(this->mousePos);
             }
         }
@@ -60,6 +77,10 @@ void Game::render() {
     this->window->clear();
 
     this->field->drawBoard(*window);
+
+    this->swap_sides->drawButton(*window);
+    this->reset->drawButton(*window);  
+    this->player_vs_player->drawButton(*window); 
 
     this->window->display();
 }

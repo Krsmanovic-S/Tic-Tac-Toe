@@ -7,11 +7,16 @@ AI::AI() {
 
 // Functions
 void AI::generateMove(Board& field) {
-    int i = rand() % 3;
-    int j = rand() % 3;
+    int i, j;
 
-    if(field.get_field()[i][j] == 0) {
-        field.set_field(i, j);
-        field.set_player_turn();
+    while(!field.get_player_turn())
+    {
+        i = rand() % 3;
+        j = rand() % 3;
+        if(field.get_field()[i][j] == 0) 
+        {
+            field.set_field(i, j);
+            field.set_player_turn();
+        }
     }
 }
