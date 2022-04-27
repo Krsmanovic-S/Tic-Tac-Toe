@@ -3,7 +3,8 @@
 // Initializers
 void Button::initButtonSprite(sf::Vector2f button_pos) {
     this->button_texture.loadFromFile("Resources/button.png");
-    
+    this->mouse_over_button.loadFromFile("Resources/hover_over.png");
+
     this->button_sprite.setTexture(button_texture);
     this->button_sprite.setScale(0.85, 0.85);
     this->button_sprite.setPosition(button_pos);
@@ -24,12 +25,39 @@ void Button::initButtonText(sf::Vector2f text_pos, std::string text) {
 Button::Button(sf::Vector2f button_pos, sf::Vector2f text_pos, std::string text) {
     initButtonSprite(button_pos);
     initButtonText(text_pos, text);
+
+    this->change_button_texture = false;
+}
+
+// Setters
+void Button::set_button_sprite() {
+    if(this->change_button_texture)
+        this->button_sprite.setTexture(mouse_over_button);
+    else
+        this->button_sprite.setTexture(button_texture);
+}
+
+void Button::set_button_texture(bool x) {
+    this->change_button_texture = x;
 }
 
 // Functions
 void Button::drawButton(sf::RenderWindow& window) {
     window.draw(this->button_sprite);
     window.draw(this->button_text);
+}
+
+void Button::adjust_button_texture(sf::Vector2f mousePos) {
+    if(isMouseOver(mousePos))
+    {
+        set_button_sprite();
+        set_button_texture(true);
+    }
+    else
+    {
+        set_button_texture(false);
+        set_button_sprite();
+    }
 }
 
 bool Button::isMouseOver(sf::Vector2f mousePos) {

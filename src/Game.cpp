@@ -44,7 +44,7 @@ void Game::updateSFMLEvents() {
                 if(this->mousePos.y < 100)
                 {
                     if(this->swap_sides->isMouseOver(sf::Vector2f(mousePos)))
-                    {
+                    { 
                         this->field->set_player_symbol();
                         this->field->reset();
                     }
@@ -66,8 +66,13 @@ void Game::updateSFMLEvents() {
 void Game::update() {
     mousePos = sf::Mouse::getPosition(*window);
 
-    // Don't need to check until the 5th move, 
-    // there can't be a winner before then.
+    // Update the button textures if mouse is over them.
+    this->swap_sides->adjust_button_texture(sf::Vector2f(mousePos));
+    this->reset->adjust_button_texture(sf::Vector2f(mousePos));
+    this->pvp->adjust_button_texture(sf::Vector2f(mousePos));
+
+    // Don't need to check for the winner until the  
+    // 5th move, there can't be a winner before then.
     if(this->field->get_open_cells() < 6)
         this->field->checkWinner();
 
