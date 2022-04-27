@@ -14,7 +14,8 @@ void Board::initField() {
 
 void Board::initPlayer() {
     this->is_player_turn = true;
-    this->is_player_x = true;
+    this->player_vs_player = false;
+    this->player_symbol = 1;
 }
 
 void Board::initGameState() {
@@ -40,16 +41,16 @@ Board::Board()
 };
 
 // Getters 
-std::vector<std::vector<int>> Board::get_field() {
-    return this->field;
-}
-
 bool Board::get_game_over() {
     return this->game_over;
 }
 
 bool Board::get_player_turn() {
     return this->is_player_turn;
+}
+
+int Board::get_player_symbol() {
+    return this->player_symbol;
 }
 
 int Board::get_open_cells() {
@@ -61,12 +62,25 @@ void Board::set_player_turn() {
     this->is_player_turn = true;
 }
 
-void Board::set_player_x() {
-    this->is_player_x = !this->is_player_x;
+void Board::set_player_symbol() {
+    if(player_symbol == 1)
+        this->player_symbol = 2;
+    else
+        this->player_symbol = 1;
+}
+
+void Board::set_pvp() {
+    if(!this->player_vs_player)
+        this->player_vs_player = true;
+    else
+    {
+        this->player_symbol = 1;
+        this->player_vs_player = false;
+    }
 }
 
 void Board::set_field(int i, int j) {
-    if(is_player_x)
+    if(this->player_symbol == 1)
         this->field[i][j] = 2;
     else
         this->field[i][j] = 1;
@@ -84,39 +98,26 @@ void Board::setCell(sf::RectangleShape& cell, sf::Vector2f cell_pos) {
 // Functions
 void Board::drawBoard(sf::RenderWindow& window) {
     sf::Vector2f cell_position;
+    sf::RectangleShape cell;
 
     for(int i = 0; i < 3; i++)
     {
         for(int j = 0; j < 3; j++)
         {
-            if(field[i][j] == 0)
+            cell = sf::RectangleShape(sf::Vector2f(295, 295));
+            cell_position = sf::Vector2f(i * 250, j * 250 + 100);
+            setCell(cell, cell_position);
+
+            window.draw(cell);
+
+            if(field[i][j] == 1)
             {
-                sf::RectangleShape cell = sf::RectangleShape(sf::Vector2f(295, 295));
-                cell_position = sf::Vector2f(i * 250, j * 250 + 100);
-                setCell(cell, cell_position);
-
-                window.draw(cell);
-            }
-            else if(field[i][j] == 1)
-            {
-                sf::RectangleShape cell = sf::RectangleShape(sf::Vector2f(295, 295));
-                cell_position = sf::Vector2f(i * 250, j * 250 + 100);
-                setCell(cell, cell_position);
-
-                window.draw(cell);
-
                 occupied_cell.setTexture(texture_x);
                 occupied_cell.setPosition(i * 250, j * 250 + 100);
                 window.draw(occupied_cell);              
             }
             else if(field[i][j] == 2)
             {
-                sf::RectangleShape cell = sf::RectangleShape(sf::Vector2f(295, 295));
-                cell_position = sf::Vector2f(i * 250, j * 250 + 100);
-                setCell(cell, cell_position);
-
-                window.draw(cell);
-
                 occupied_cell.setTexture(texture_o);
                 occupied_cell.setPosition(i * 250, j * 250 + 100);
                 window.draw(occupied_cell);                     
@@ -128,28 +129,20 @@ void Board::drawBoard(sf::RenderWindow& window) {
 void Board::changeMatrix(sf::Vector2i mousePos) {
     int coordX, coordY;
 
-    // Y coordinate less than 100 is to avoid
-    // registering a click above the grid.
-    if(mousePos.y > 100)
-    {
-        coordX = mousePos.x / 250;
-        coordY = mousePos.y / 350;
-        
-        // We can only play if it is our turn.
-        if(is_player_turn)
-        {
-            // And we clicked on a valid cell.
-            if(this->field[coordX][coordY] == 0)
-            {
-                if(is_player_x)
-                    this->field[coordX][coordY] = 1;
-                else
-                    this->field[coordX][coordY] = 2;
+    coordX = mousePos.x / 250;
+    coordY = (mousePos.y + 100) / 350;
 
-                is_player_turn = false;
-                this->open_cells--;
-            }
-        }
+    // We can only play if it is our turn and we clicked on a valid cell.
+    if(is_player_turn && this->field[coordX][coordY] == 0)
+    {
+        this->field[coordX][coordY] = this->player_symbol;
+
+        if(!this->player_vs_player)
+            is_player_turn = false;
+        else
+            set_player_symbol();
+
+        this->open_cells--;
     }
 }
 
@@ -198,25 +191,9 @@ void Board::checkWinner() {
         return;
     }
 
-    /*
-    for(int i = 0; i < 3; i++)
-    {
-        for(int j = 0; j < 3; j++)
-        {
-            if(field[i][j] == 0)
-            {
-                this->game_over = false;
-                return;
-            }
-        }
-    }
-    */
-
     // Check for a draw.
     if(this->open_cells == 0)
-        this->game_over = true;
-
-    return;        
+        this->game_over = true;        
 }
 
 void Board::reset() {
@@ -229,8 +206,17 @@ void Board::reset() {
     this->game_over = false;
     this->open_cells = 9;
 
-    if(this->is_player_x)
-        this->is_player_turn = true;
+    if(!this->player_vs_player)
+    {
+        if(this->player_symbol == 1)
+            this->is_player_turn = true;
+        else
+            this->is_player_turn = false;
+    }
     else
-        this->is_player_turn = false;
+    {
+        this->is_player_turn = true;
+        if(this->player_symbol == 2)
+            set_player_symbol();
+    }
 }

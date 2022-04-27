@@ -1,7 +1,6 @@
 #pragma once
 
-#include <SFML/Graphics.hpp>
-#include "board.hpp"
+#include <memory>
 #include "AI.hpp"
 #include "button.hpp"
 
@@ -9,16 +8,16 @@ class Game
 {
 private:
     // Variables
-    sf::RenderWindow* window;
+    std::shared_ptr<sf::RenderWindow> window;
     sf::Event sfmlEvent;
     sf::Vector2i mousePos;
 
-    Board* field;
-    AI* computer;
+    std::shared_ptr<Board> field;
+    std::shared_ptr<AI> computer;
 
-    Button* swap_sides;
-    Button* reset;
-    Button* player_vs_player;
+    std::shared_ptr<Button> swap_sides;
+    std::shared_ptr<Button> reset;
+    std::shared_ptr<Button> pvp;
 
     // Initializers
     void initWindow();
@@ -26,9 +25,8 @@ private:
     void initAI();
     void initButton();
 public:
-    // Constructor and Destructor
+    // Constructor
     Game();
-    virtual ~Game();
 
     // Functions
     void updateSFMLEvents();

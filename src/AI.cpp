@@ -6,17 +6,17 @@ AI::AI() {
 };
 
 // Functions
-void AI::generateMove(Board& field) {
+void AI::generateMove(Board& board) {
     int i, j;
 
-    while(!field.get_player_turn())
+    while(!board.get_player_turn())
     {
         i = rand() % 3;
         j = rand() % 3;
-        if(field.get_field()[i][j] == 0) 
+        if(board.field[i][j] == 0) 
         {
-            field.set_field(i, j);
-            field.set_player_turn();
+            board.set_field(i, j);
+            board.set_player_turn();
         }
     }
 }

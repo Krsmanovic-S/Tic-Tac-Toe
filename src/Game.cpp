@@ -2,39 +2,31 @@
 
 // Initializers
 void Game::initWindow() {
-    this->window = new sf::RenderWindow(sf::VideoMode(750, 850), "Tic-Tac-Toe");
+    this->window = std::make_shared<sf::RenderWindow>(sf::VideoMode(750, 850), "Tic-Tac-Toe");
 }
 
 void Game::initBoard() {
-    this->field = new Board();
+    this->field = std::make_shared<Board>();
 }
 
 void Game::initAI() {
-    this->computer = new AI();
+    this->computer = std::make_shared<AI>();
 }
 
 void Game::initButton() {
-    this->swap_sides = new Button(sf::Vector2f(15, 20), sf::Vector2f(40, 40), "CHANGE SIDES");
-    this->reset = new Button(sf::Vector2f(265, 20), sf::Vector2f(340, 40), "RESET");
-    this->player_vs_player = new Button(sf::Vector2f(515, 20), sf::Vector2f(565, 40), "VS PLAYER");
+    using namespace sf;
+
+    this->swap_sides = std::make_shared<Button>(Vector2f(15, 20), Vector2f(40, 40), "CHANGE SIDES");
+    this->reset = std::make_shared<Button>(Vector2f(265, 20), Vector2f(340, 40), "RESET");
+    this->pvp = std::make_shared<Button>(Vector2f(515, 20), Vector2f(565, 40), "VS PLAYER");
 }
 
-// Constructor and Destructor
+// Constructor
 Game::Game() {
     initWindow();
     initBoard();
     initAI();
     initButton();
-}
-
-Game::~Game() {
-    delete this->window;
-    delete this->field;
-    delete this->computer;
-
-    delete this->swap_sides;
-    delete this->reset;
-    delete this->player_vs_player;
 }
 
 // Functions
@@ -48,16 +40,23 @@ void Game::updateSFMLEvents() {
         {
             if(this->sfmlEvent.key.code == sf::Mouse::Left)
             {
-                if(this->reset->isMouseOver(sf::Vector2f(mousePos)))
-                    this->field->reset(); 
-
-                if(this->swap_sides->isMouseOver(sf::Vector2f(mousePos)))
+                // Clicking on the buttons.
+                if(this->mousePos.y < 100)
                 {
-                    this->field->set_player_x();
-                    this->field->reset();
-                }
+                    if(this->swap_sides->isMouseOver(sf::Vector2f(mousePos)))
+                    {
+                        this->field->set_player_symbol();
+                        this->field->reset();
+                    }
 
-                if(!this->field->get_game_over() && this->field->get_player_turn())
+                    if(this->reset->isMouseOver(sf::Vector2f(mousePos)))
+                        this->field->reset(); 
+
+                    if(this->pvp->isMouseOver(sf::Vector2f(mousePos)))
+                        this->field->set_pvp();
+                }
+                // Clicking on the field itself.
+                else if(!this->field->get_game_over() && this->field->get_player_turn())
                     this->field->changeMatrix(this->mousePos);
             }
         }
@@ -67,7 +66,10 @@ void Game::updateSFMLEvents() {
 void Game::update() {
     mousePos = sf::Mouse::getPosition(*window);
 
-    this->field->checkWinner();
+    // Don't need to check until the 5th move, 
+    // there can't be a winner before then.
+    if(this->field->get_open_cells() < 6)
+        this->field->checkWinner();
 
     if(!this->field->get_player_turn() && !this->field->get_game_over())
         this->computer->generateMove(*field);
@@ -80,7 +82,7 @@ void Game::render() {
 
     this->swap_sides->drawButton(*window);
     this->reset->drawButton(*window);  
-    this->player_vs_player->drawButton(*window); 
+    this->pvp->drawButton(*window); 
 
     this->window->display();
 }

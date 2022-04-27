@@ -2,7 +2,7 @@
 
 #include "board.hpp"
 
-struct AI 
+class AI 
 {
 public:
     // Constructor

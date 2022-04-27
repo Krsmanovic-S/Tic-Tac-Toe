@@ -9,8 +9,8 @@ class Board
 private:
     // Variables
     bool is_player_turn;
-    bool is_player_x;
     bool game_over;
+    bool player_vs_player;
 
     sf::Texture texture_x;
     sf::Texture texture_o;
@@ -18,6 +18,8 @@ private:
     sf::Color cell_color;
 
     matrix field;
+
+    int player_symbol;
     int open_cells;
 
     // Initializers
@@ -25,19 +27,24 @@ private:
     void initPlayer();
     void initGameState();
     void initTextAndColor();
+
+    // Friends
+    friend class AI;
 public:
     // Constructor
     Board();
 
     // Getters 
-    matrix get_field();
     bool get_game_over();
     bool get_player_turn();
+
+    int get_player_symbol();
     int get_open_cells();
 
     // Setters
     void set_player_turn();
-    void set_player_x();
+    void set_player_symbol();
+    void set_pvp();
     void set_field(int i, int j);
     void setCell(sf::RectangleShape& cell, sf::Vector2f cell_pos);
 
