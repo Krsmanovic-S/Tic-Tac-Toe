@@ -29,18 +29,6 @@ Button::Button(sf::Vector2f button_pos, sf::Vector2f text_pos, std::string text)
     this->change_button_texture = false;
 }
 
-// Setters
-void Button::set_button_sprite() {
-    if(this->change_button_texture)
-        this->button_sprite.setTexture(mouse_over_button);
-    else
-        this->button_sprite.setTexture(button_texture);
-}
-
-void Button::set_button_texture(bool x) {
-    this->change_button_texture = x;
-}
-
 // Functions
 void Button::drawButton(sf::RenderWindow& window) {
     window.draw(this->button_sprite);
@@ -49,15 +37,9 @@ void Button::drawButton(sf::RenderWindow& window) {
 
 void Button::adjust_button_texture(sf::Vector2f mousePos) {
     if(isMouseOver(mousePos))
-    {
-        set_button_sprite();
-        set_button_texture(true);
-    }
+        this->button_sprite.setTexture(mouse_over_button);
     else
-    {
-        set_button_texture(false);
-        set_button_sprite();
-    }
+        this->button_sprite.setTexture(button_texture);
 }
 
 bool Button::isMouseOver(sf::Vector2f mousePos) {

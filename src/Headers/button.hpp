@@ -3,6 +3,8 @@
 #include <SFML/Graphics.hpp>
 #include <string>
 
+// Need to do the button hovering-over / clicking correctly.
+
 class Button
 {
 private:
@@ -21,10 +23,6 @@ private:
 public:
     // Constructor
     Button(sf::Vector2f button_pos, sf::Vector2f text_pos, std::string text);
-
-    // Setters
-    void set_button_sprite();
-    void set_button_texture(bool x);
 
     // Functions
     void drawButton(sf::RenderWindow& window);

@@ -36,29 +36,27 @@ void Game::updateSFMLEvents() {
         if(this->sfmlEvent.type == sf::Event::Closed)
             this->window->close();
 
-        if(this->sfmlEvent.type == sf::Event::MouseButtonPressed)
+        if(this->sfmlEvent.type == sf::Event::MouseButtonPressed &&
+           this->sfmlEvent.key.code == sf::Mouse::Left)
         {
-            if(this->sfmlEvent.key.code == sf::Mouse::Left)
+            // Clicking on the buttons.
+            if(this->mousePos.y < 100)
             {
-                // Clicking on the buttons.
-                if(this->mousePos.y < 100)
-                {
-                    if(this->swap_sides->isMouseOver(sf::Vector2f(mousePos)))
-                    { 
-                        this->field->set_player_symbol();
-                        this->field->reset();
-                    }
-
-                    if(this->reset->isMouseOver(sf::Vector2f(mousePos)))
-                        this->field->reset(); 
-
-                    if(this->pvp->isMouseOver(sf::Vector2f(mousePos)))
-                        this->field->set_pvp();
+                if(this->swap_sides->isMouseOver(sf::Vector2f(mousePos)))
+                { 
+                    this->field->set_player_symbol();
+                    this->field->reset();
                 }
-                // Clicking on the field itself.
-                else if(!this->field->get_game_over() && this->field->get_player_turn())
-                    this->field->changeMatrix(this->mousePos);
+
+                if(this->reset->isMouseOver(sf::Vector2f(mousePos)))
+                    this->field->reset(); 
+
+                if(this->pvp->isMouseOver(sf::Vector2f(mousePos)))
+                    this->field->set_pvp();
             }
+            // Clicking on the field itself.
+            else if(!this->field->get_game_over() && this->field->get_player_turn())
+                this->field->changeMatrix(this->mousePos);
         }
     }
 }

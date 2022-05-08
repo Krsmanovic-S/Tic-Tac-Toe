@@ -85,6 +85,7 @@ void Board::set_field(int i, int j) {
     else
         this->field[i][j] = 1;
 
+    this->is_player_turn = true;
     this->open_cells--;
 }
 
