@@ -79,7 +79,7 @@ void Game::update() {
 }
 
 void Game::render() {
-    this->window->clear();
+    this->window->clear(sf::Color(212, 220, 228));
 
     this->field->drawBoard(*window);
 

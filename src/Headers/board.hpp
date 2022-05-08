@@ -17,10 +17,11 @@ private:
     sf::Sprite occupied_cell;
     sf::Color cell_color;
 
-    matrix field;
-
     int player_symbol;
     int open_cells;
+    
+    matrix field;
+    std::vector<std::pair<int, int>> winningIndex;
 
     // Initializers
     void initField();

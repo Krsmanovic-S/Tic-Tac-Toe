@@ -25,11 +25,16 @@ void Button::initButtonText(sf::Vector2f text_pos, std::string text) {
 Button::Button(sf::Vector2f button_pos, sf::Vector2f text_pos, std::string text) {
     initButtonSprite(button_pos);
     initButtonText(text_pos, text);
-
-    this->change_button_texture = false;
 }
 
 // Functions
+bool Button::isMouseOver(sf::Vector2f mousePos) {
+    if(this->button_sprite.getGlobalBounds().contains(mousePos.x, mousePos.y))
+        return true;
+    else
+        return false;
+}
+
 void Button::drawButton(sf::RenderWindow& window) {
     window.draw(this->button_sprite);
     window.draw(this->button_text);
@@ -40,11 +45,4 @@ void Button::adjust_button_texture(sf::Vector2f mousePos) {
         this->button_sprite.setTexture(mouse_over_button);
     else
         this->button_sprite.setTexture(button_texture);
-}
-
-bool Button::isMouseOver(sf::Vector2f mousePos) {
-    if(this->button_sprite.getGlobalBounds().contains(mousePos.x, mousePos.y))
-        return true;
-    else
-        return false;
 }

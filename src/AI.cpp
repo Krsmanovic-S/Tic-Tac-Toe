@@ -3,6 +3,9 @@
 // Constructor
 AI::AI() {
     this->isMaximizer = false;
+
+    this->bestMove.first = -1;
+    this->bestMove.second = -1;
 };
 
 // Functions
@@ -31,7 +34,7 @@ int AI::evaluate(Board& board) {
         {
             if (board.field[row][0] == 1)
                 return +10;
-            else if (board.field[row][0] == 2)
+            else if(board.field[row][0] == 2)
                 return -10;
         }
     }
@@ -44,7 +47,7 @@ int AI::evaluate(Board& board) {
         {
             if (board.field[0][col]==1)
                 return +10;
-            else if (board.field[0][col]==2)
+            else if(board.field[0][col]==2)
                 return -10;
         }
     }
@@ -68,8 +71,7 @@ int AI::evaluate(Board& board) {
     return 0;
 }
  
-int AI::minimax(Board& board, int depth, bool isMaximizer)
-{
+int AI::minimax(Board& board, int depth, bool isMaximizer) {
     int best, score = evaluate(board);
  
     // If Maximizer/Minimizer has won the game return the score.
@@ -95,7 +97,7 @@ int AI::minimax(Board& board, int depth, bool isMaximizer)
                     // maximum value. After that undo the move.
                     board.field[i][j] = 1;
  
-                    best = max(best, minimax(board, depth+1, !isMaximizer));
+                    best = std::max(best, minimax(board, depth+1, !isMaximizer));
  
                     board.field[i][j] = 0;
                 }
@@ -118,7 +120,7 @@ int AI::minimax(Board& board, int depth, bool isMaximizer)
                     // score on the recursive call to minimax.
                     board.field[i][j] = 2;
 
-                    best = min(best, minimax(board, depth+1, !isMaximizer));
+                    best = std::min(best, minimax(board, depth+1, !isMaximizer));
  
                     board.field[i][j] = 0;
                 }

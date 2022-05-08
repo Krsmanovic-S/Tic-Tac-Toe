@@ -1,5 +1,4 @@
 #include "board.hpp"
-#include <iostream>
 
 // Initializers
 void Board::initField() {
@@ -10,16 +9,13 @@ void Board::initField() {
     };
 
     this->open_cells = 9;
+    this->game_over = false;
 }
 
 void Board::initPlayer() {
     this->is_player_turn = true;
     this->player_vs_player = false;
     this->player_symbol = 1;
-}
-
-void Board::initGameState() {
-    this->game_over = false;
 }
 
 void Board::initTextAndColor() {
@@ -36,7 +32,6 @@ Board::Board()
 {
     initField();
     initPlayer();
-    initGameState();
     initTextAndColor();
 };
 
@@ -109,6 +104,16 @@ void Board::drawBoard(sf::RenderWindow& window) {
             cell_position = sf::Vector2f(i * 250, j * 250 + 100);
             setCell(cell, cell_position);
 
+            // Color the winning cells differently if the game is over.
+            if(this->game_over)
+            {
+                for(auto x : this->winningIndex)
+                {
+                    if(x.first == i && x.second == j)
+                        cell.setFillColor(sf::Color(196, 186, 92));
+                }
+            }
+
             window.draw(cell);
 
             if(field[i][j] == 1)
@@ -131,7 +136,13 @@ void Board::changeMatrix(sf::Vector2i mousePos) {
     int coordX, coordY;
 
     coordX = mousePos.x / 250;
-    coordY = (mousePos.y + 100) / 350;
+
+    if(mousePos.y <= 350)
+        coordY = 0;
+    else if(mousePos.y >= 600)
+        coordY = 2;
+    else
+        coordY = 1;
 
     // We can only play if it is our turn and we clicked on a valid cell.
     if(is_player_turn && this->field[coordX][coordY] == 0)
@@ -148,53 +159,50 @@ void Board::changeMatrix(sf::Vector2i mousePos) {
 }
 
 void Board::checkWinner() {
-    // Check rows for a winner.
-    for(int i = 0; i < 3; i++)
+    // Check for a draw.
+    if(this->open_cells == 0)
+        this->game_over = true; 
+
+    // Check columns for a winner.
+    for(int col = 0; col < 3; col++)
     {
-        if(field[i][0] == 1 && field[i][1] == 1 && field[i][2] == 1)
+        if((field[col][0] == 1 && field[col][1] == 1 && field[col][2] == 1) ||
+           (field[col][0] == 2 && field[col][1] == 2 && field[col][2] == 2))
         {
-            this->game_over = true;
-            return;
-        }
-        else if(field[i][0] == 2 && field[i][1] == 2 && field[i][2] == 2)
-        {
+            this->winningIndex = {{col, 0}, {col, 1}, {col, 2}};
             this->game_over = true;
             return;
         }
     }
 
-    // Check columns for a winner.
-    for(int j = 0; j < 3; j++)
+    // Check rows for a winner.
+    for(int row = 0; row < 3; row++)
     {
-        if(field[0][j] == 1 && field[1][j] == 1 && field[2][j] == 1)
+        if((field[0][row] == 1 && field[1][row] == 1 && field[2][row] == 1) ||
+           (field[0][row] == 2 && field[1][row] == 2 && field[2][row] == 2))
         {
-            this->game_over = true;
-            return;
-        }
-        else if(field[0][j] == 2 && field[1][j] == 2 && field[2][j] == 2)
-        {
+            this->winningIndex = {{0, row}, {1, row}, {2, row}};
             this->game_over = true;
             return;
         }
     }
 
     // Check the two diagonals as well.
-    if((field[0][0] == 1 && field[1][1] == 1 && field[2][2] == 1) ||
-       (field[2][0] == 1 && field[1][1] == 1 && field[0][2] == 1))
+    if((field[0][0] == 1 && field[1][1] == 1 && field[2][2] == 1) || 
+       (field[0][0] == 2 && field[1][1] == 2 && field[2][2] == 2))
     {
-        this->game_over = true;
-        return;
-    }
-    if((field[0][0] == 2 && field[1][1] == 2 && field[2][2] == 2) ||
-       (field[2][0] == 2 && field[1][1] == 2 && field[0][2] == 2))
-    {
+        this->winningIndex = {{0, 0}, {1, 1}, {2, 2}};
         this->game_over = true;
         return;
     }
 
-    // Check for a draw.
-    if(this->open_cells == 0)
-        this->game_over = true;        
+    if((field[2][0] == 1 && field[1][1] == 1 && field[0][2] == 1) ||
+       (field[2][0] == 2 && field[1][1] == 2 && field[0][2] == 2))
+    {
+        this->winningIndex = {{2, 0}, {1, 1}, {0, 2}};
+        this->game_over = true;
+        return;        
+    }
 }
 
 void Board::reset() {
@@ -220,4 +228,6 @@ void Board::reset() {
         if(this->player_symbol == 2)
             set_player_symbol();
     }
+
+    this->winningIndex.clear();
 }
