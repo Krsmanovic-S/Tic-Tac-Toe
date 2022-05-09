@@ -75,7 +75,7 @@ void Game::update() {
         this->field->checkWinner();
 
     if(!this->field->get_player_turn() && !this->field->get_game_over())
-        this->computer->generateMove(*field);
+        this->computer->generateMove(*field);        
 }
 
 void Game::render() {

@@ -84,7 +84,7 @@ void Board::set_field(int i, int j) {
     this->open_cells--;
 }
 
-void Board::setCell(sf::RectangleShape& cell, sf::Vector2f cell_pos) {
+void Board::set_cell(sf::RectangleShape& cell, sf::Vector2f cell_pos) {
     cell.setFillColor(cell_color);
     cell.setOutlineColor(sf::Color(0, 0, 0));
     cell.setOutlineThickness(2.5f);
@@ -102,7 +102,7 @@ void Board::drawBoard(sf::RenderWindow& window) {
         {
             cell = sf::RectangleShape(sf::Vector2f(295, 295));
             cell_position = sf::Vector2f(i * 250, j * 250 + 100);
-            setCell(cell, cell_position);
+            set_cell(cell, cell_position);
 
             // Color the winning cells differently if the game is over.
             if(this->game_over)
@@ -116,6 +116,7 @@ void Board::drawBoard(sf::RenderWindow& window) {
 
             window.draw(cell);
 
+            // Draw the X and O textures where needed.
             if(field[i][j] == 1)
             {
                 occupied_cell.setTexture(texture_x);
@@ -159,10 +160,6 @@ void Board::changeMatrix(sf::Vector2i mousePos) {
 }
 
 void Board::checkWinner() {
-    // Check for a draw.
-    if(this->open_cells == 0)
-        this->game_over = true; 
-
     // Check columns for a winner.
     for(int col = 0; col < 3; col++)
     {
@@ -195,7 +192,6 @@ void Board::checkWinner() {
         this->game_over = true;
         return;
     }
-
     if((field[2][0] == 1 && field[1][1] == 1 && field[0][2] == 1) ||
        (field[2][0] == 2 && field[1][1] == 2 && field[0][2] == 2))
     {
@@ -203,6 +199,10 @@ void Board::checkWinner() {
         this->game_over = true;
         return;        
     }
+
+    // Finally check for a draw.
+    if(this->open_cells == 0)
+        this->game_over = true;
 }
 
 void Board::reset() {

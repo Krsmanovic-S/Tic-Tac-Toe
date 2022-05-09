@@ -16,6 +16,6 @@ public:
     bool isMovesLeft(Board& board);
     void generateMove(Board& field);
     int evaluate(Board& board);
-    int minimax(Board& board, int depth, bool isMaximizer);
+    int minimax(Board& board, bool isMaximizer);
     std::pair<int, int> findBestMove(Board& board);
 };

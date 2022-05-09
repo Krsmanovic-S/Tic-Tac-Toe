@@ -47,7 +47,7 @@ public:
     void set_player_symbol();
     void set_pvp();
     void set_field(int i, int j);
-    void setCell(sf::RectangleShape& cell, sf::Vector2f cell_pos);
+    void set_cell(sf::RectangleShape& cell, sf::Vector2f cell_pos);
 
     // Functions
     void drawBoard(sf::RenderWindow& window);

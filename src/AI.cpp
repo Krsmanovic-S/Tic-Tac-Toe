@@ -2,8 +2,6 @@
 
 // Constructor
 AI::AI() {
-    this->isMaximizer = false;
-
     this->bestMove.first = -1;
     this->bestMove.second = -1;
 };
@@ -33,37 +31,37 @@ int AI::evaluate(Board& board) {
            board.field[row][1] == board.field[row][2])
         {
             if (board.field[row][0] == 1)
-                return +10;
+                return 10;
             else if(board.field[row][0] == 2)
                 return -10;
         }
     }
  
     // Checking columns for X or O victory.
-    for(int col = 0; col<3; col++)
+    for(int col = 0; col < 3; col++)
     {
         if(board.field[0][col]==board.field[1][col] &&
            board.field[1][col]==board.field[2][col])
         {
-            if (board.field[0][col]==1)
-                return +10;
+            if(board.field[0][col]==1)
+                return 10;
             else if(board.field[0][col]==2)
                 return -10;
         }
     }
  
     // Checking diagonals for X or O victory.
-    if(board.field[0][0]==board.field[1][1] && board.field[1][1]==board.field[2][2])
+    if(board.field[0][0] == board.field[1][1] && board.field[1][1] == board.field[2][2])
     {
-        if(board.field[0][0]==1)
-            return +10;
-        else if(board.field[0][0]==2)
+        if(board.field[0][0] == 1)
+            return 10;
+        else if(board.field[0][0] == 2)
             return -10;
     }
     if(board.field[0][2] == board.field[1][1] && board.field[1][1] == board.field[2][0])
     {
         if(board.field[0][2] == 1)
-            return +10;
+            return 10;
         else if(board.field[0][2] == 2)
             return -10;
     }
@@ -71,12 +69,12 @@ int AI::evaluate(Board& board) {
     return 0;
 }
  
-int AI::minimax(Board& board, int depth, bool isMaximizer) {
-    int best, score = evaluate(board);
+int AI::minimax(Board& board, bool isMaximizer) {
+    int bestScore, currentScore = evaluate(board);
  
     // If Maximizer/Minimizer has won the game return the score.
-    if(score == 10 || score == -10)
-        return score;
+    if(currentScore == 10 || currentScore == -10)
+        return currentScore;
  
     // No moves left and no winner means a tie.
     if(isMovesLeft(board) == false)
@@ -84,7 +82,7 @@ int AI::minimax(Board& board, int depth, bool isMaximizer) {
  
     if(isMaximizer)
     {
-        best = -1000;
+        bestScore = -1000;
  
         for(int i = 0; i < 3; i++)
         {
@@ -97,17 +95,17 @@ int AI::minimax(Board& board, int depth, bool isMaximizer) {
                     // maximum value. After that undo the move.
                     board.field[i][j] = 1;
  
-                    best = std::max(best, minimax(board, depth+1, !isMaximizer));
+                    bestScore = std::max(bestScore, minimax(board, !isMaximizer));
  
                     board.field[i][j] = 0;
                 }
             }
         }
-        return best;
+        return bestScore;
     }
     else
     {
-        best = 1000;
+        bestScore = 1000;
  
         for(int i = 0; i < 3; i++)
         {
@@ -120,13 +118,13 @@ int AI::minimax(Board& board, int depth, bool isMaximizer) {
                     // score on the recursive call to minimax.
                     board.field[i][j] = 2;
 
-                    best = std::min(best, minimax(board, depth+1, !isMaximizer));
+                    bestScore = std::min(bestScore, minimax(board, !isMaximizer));
  
                     board.field[i][j] = 0;
                 }
             }
         }
-        return best;
+        return bestScore;
     }
 }
  
@@ -151,9 +149,9 @@ std::pair<int, int> AI::findBestMove(Board& board) {
  
                 // Evaluation of this current move.
                 if(board.player_symbol == 1)
-                    moveVal = minimax(board, 0, true);
+                    moveVal = minimax(board, true);
                 else
-                    moveVal = minimax(board, 0, false);
+                    moveVal = minimax(board, false);
  
                 board.field[i][j] = 0;
  
