@@ -1,11 +1,17 @@
 # Tic-Tac-Toe
  A simple game of Tic-Tac-Toe created with C++ and the SFML Library.
 
-![screenshot_1](https://user-images.githubusercontent.com/103185975/165186427-ee9d454a-913f-4b0d-9260-999bdde5b4ab.PNG)  ![screenshot_2](https://user-images.githubusercontent.com/103185975/165186431-cc017538-5fca-4caa-b00b-9a8d9f1981aa.PNG)
-
+![screenshot_1](https://user-images.githubusercontent.com/103185975/167437273-c2eebe78-cbc9-4832-bb19-034acf29d2da.PNG)  ![screenshot_2](https://user-images.githubusercontent.com/103185975/167437278-563032d6-fe20-452e-8562-c254e06f1637.PNG)
 --------------------------------
+Features:
 
-The game currently features an AI opponent which will make moves randomly. I plan to change that in the future, but for now it is like this. You can change whether you are playing as X or as O with a press on the Change Sides button above the grid. The reset button will reset the entire board to an empty one, if you desire to reset before the game is over, you can do that. The last button for Player VS Player is not implemented yet but will be added in the future.
+-Play as both X and O
+
+-Play versus the computer or versus another player
+
+-Reset/Change what symbol you are playing at any given time
+
+-Unbeatable AI that plays using the Minimax Algorithm
 
 --------------------------------
  The settings/workspace I used for compiling:
