@@ -5,33 +5,10 @@
 
 class Board
 {
-    typedef std::vector<std::vector<int>> matrix;
-private:
-    // Variables
-    bool is_player_turn;
-    bool game_over;
-    bool player_vs_player;
-
-    sf::Texture texture_x;
-    sf::Texture texture_o;
-    sf::Sprite occupied_cell;
-    sf::Color cell_color;
-
-    int player_symbol;
-    int open_cells;
-    
-    matrix field;
-    std::vector<std::pair<int, int>> winningIndex;
-
-    // Initializers
-    void initField();
-    void initPlayer();
-    void initGameState();
-    void initTextAndColor();
-
+public:
     // Friends
     friend class AI;
-public:
+
     // Constructor
     Board();
 
@@ -54,4 +31,27 @@ public:
     void changeMatrix(sf::Vector2i mousePos);
     void checkWinner();
     void reset();
+
+private:
+    // Variables
+    bool is_player_turn;
+    bool game_over;
+    bool player_vs_player;
+
+    sf::Texture texture_x;
+    sf::Texture texture_o;
+    sf::Sprite occupied_cell;
+    sf::Color cell_color;
+
+    int player_symbol;
+    int open_cells;
+    
+    std::vector<std::vector<int>> field;
+    std::vector<std::pair<int, int>> winningIndex;
+
+    // Initializers
+    void initField();
+    void initPlayer();
+    void initGameState();
+    void initTextAndColor();
 };

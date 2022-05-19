@@ -16,7 +16,7 @@ bool AI::isMovesLeft(Board& board) {
 }
 
 void AI::generateMove(Board& board) {
-    if(board.game_over == false && !board.is_player_turn)
+    if(board.get_game_over() == false && !board.get_player_turn())
     {
         this->bestMove = findBestMove(board);
         board.set_field(bestMove.first, bestMove.second);

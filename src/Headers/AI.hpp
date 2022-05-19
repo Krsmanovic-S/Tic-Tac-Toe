@@ -5,9 +5,6 @@
 
 class AI 
 {
-private:
-    bool isMaximizer;
-    std::pair<int, int> bestMove;
 public:
     // Constructor
     AI();
@@ -18,4 +15,7 @@ public:
     int evaluate(Board& board);
     int minimax(Board& board, bool isMaximizer);
     std::pair<int, int> findBestMove(Board& board);
+    
+private:
+    std::pair<int, int> bestMove;
 };

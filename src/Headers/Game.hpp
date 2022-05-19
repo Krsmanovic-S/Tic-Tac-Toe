@@ -6,6 +6,16 @@
 
 class Game 
 {
+public:
+    // Constructor
+    Game();
+
+    // Functions
+    void updateSFMLEvents();
+    void update();
+    void render();
+    void run();
+
 private:
     // Variables
     std::shared_ptr<sf::RenderWindow> window;
@@ -24,13 +34,4 @@ private:
     void initBoard();
     void initAI();
     void initButton();
-public:
-    // Constructor
-    Game();
-
-    // Functions
-    void updateSFMLEvents();
-    void update();
-    void render();
-    void run();
 };
