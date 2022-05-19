@@ -23,6 +23,12 @@
 --------------------------------
 You will need this **exact version of GCC** to compile the code if you are using VS Code like I am. For Visual Studio, you will need to download the SFML library and connect it to the project settings in the IDE (include path + link path). As for GCC, you will need to set it up as your compiler if you do not have it already. Note that you do not need to download SFML if you will be using this in VS Code, everything is set up in the project files already.
 
+Commands to clone, build and run the project:
+
+    mingw32-make.exe ---> Command to build the project
+    ./main.exe       ---> Command to run the game
+    git clone --recursive https://github.com/Krsmanovic-S/Tic-Tac-Toe
+
 --------------------------------
 Links to download required files:
 
